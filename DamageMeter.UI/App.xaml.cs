@@ -44,7 +44,7 @@ namespace DamageMeter.UI
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
-            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+            //currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 

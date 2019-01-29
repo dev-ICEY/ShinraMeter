@@ -52,13 +52,16 @@ namespace DamageMeter
         }
 
         public long Interval => _playerDamageDealt.Interval;
-        public long Amount()
+        public long Amount
         {
-            var result = from skill in Skills from source in skill.Value select SkillsData.Amount(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
-            return result.Sum();
+            get
+            {
+                var result = from skill in Skills from source in skill.Value select SkillsData.Amount(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
+                return result.Sum();
+            }
         }
 
-        public long Amount(int skillId)
+        public long AmountOf(int skillId)
         {
             var result = from skill in Skills
                 where skill.Key.Id == skillId
@@ -67,11 +70,14 @@ namespace DamageMeter
             return result.Sum();
         }
 
-        public long BiggestCrit()
+        public long BiggestCrit
         {
-            var result = from skill in Skills from source in skill.Value select SkillsData.BiggestCrit(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
-            var enumerable = result as long[] ?? result.ToArray();
-            return !enumerable.Any() ? 0 : enumerable.Max();
+            get
+            {
+                var result = from skill in Skills from source in skill.Value select SkillsData.BiggestCrit(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
+                var enumerable = result as long[] ?? result.ToArray();
+                return !enumerable.Any() ? 0 : enumerable.Max();
+            }
         }
 
         public long LowestCrit()
@@ -85,7 +91,7 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Min();
         }
 
-        public long BiggestCrit(int skillId)
+        public long BiggestCritOf(int skillId)
         {
             var result = from skill in Skills
                 where skill.Key.Id == skillId
@@ -95,25 +101,31 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
-        public double DamagePercent()
+        public double DamagePercent
+        {
+            get
+            {
+                if (_playerDealtUnrelieable) { throw new Exception("Player Dealt unrelieable"); }
+                return Amount * 100 / _playerDamageDealt.Amount;
+            }
+        }
+
+        public long DamagePercentOf(int skillId)
         {
             if (_playerDealtUnrelieable) { throw new Exception("Player Dealt unrelieable"); }
-            return Amount() * 100 / _playerDamageDealt.Amount;
+            return AmountOf(skillId) * 100 / Amount;
         }
 
-        public long DamagePercent(int skillId)
+        public long Hits
         {
-            if (_playerDealtUnrelieable) { throw new Exception("Player Dealt unrelieable"); }
-            return Amount(skillId) * 100 / Amount();
+            get
+            {
+                var result = from skill in Skills from source in skill.Value select SkillsData.Hits(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
+                return result.Sum();
+            }
         }
 
-        public long Hits()
-        {
-            var result = from skill in Skills from source in skill.Value select SkillsData.Hits(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
-            return result.Sum();
-        }
-
-        public long Hits(int skillId)
+        public long HitsOf(int skillId)
         {
             var result = from skill in Skills
                 where skill.Key.Id == skillId
@@ -139,14 +151,17 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
-        public long Crits()
+        public long Crits
         {
-            var result = from skill in Skills from source in skill.Value select SkillsData.Crits(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
-            var enumerable = result as int[] ?? result.ToArray();
-            return !enumerable.Any() ? 0 : enumerable.Sum();
+            get
+            {
+                var result = from skill in Skills from source in skill.Value select SkillsData.Crits(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
+                var enumerable = result as int[] ?? result.ToArray();
+                return !enumerable.Any() ? 0 : enumerable.Sum();
+            }
         }
 
-        public long Crits(int skillId)
+        public long CritsOf(int skillId)
         {
             var result = from skill in Skills
                 where skill.Key.Id == skillId
@@ -156,24 +171,24 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
-        public double CritRate()
+        public double CritRate => Crits * 100 / Hits;
+
+        public double CritRateOf(int skillId)
         {
-            return Crits() * 100 / Hits();
+            return CritsOf(skillId) * 100 / HitsOf(skillId);
         }
 
-        public double CritRate(int skillId)
+        public long BiggestHit
         {
-            return Crits(skillId) * 100 / Hits(skillId);
+            get
+            {
+                var result = from skill in Skills from source in skill.Value select SkillsData.BiggestHit(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
+                var enumerable = result as long[] ?? result.ToArray();
+                return !enumerable.Any() ? 0 : enumerable.Max();
+            }
         }
 
-        public long BiggestHit()
-        {
-            var result = from skill in Skills from source in skill.Value select SkillsData.BiggestHit(source, _target, skill.Key.Id, _timed, skill.Key.NpcInfo, Type);
-            var enumerable = result as long[] ?? result.ToArray();
-            return !enumerable.Any() ? 0 : enumerable.Max();
-        }
-
-        public long BiggestHit(int skillId)
+        public long BiggestHitOf(int skillId)
         {
             var result = from skill in Skills
                 where skill.Key.Id == skillId
@@ -183,14 +198,11 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
-        public double Avg()
-        {
-            return Amount() / Hits();
-        }
+        public double Avg => Amount / Hits;
 
-        public double Avg(int skillId)
+        public double AvgOf(int skillId)
         {
-            return Amount(skillId) / Hits(skillId);
+            return AmountOf(skillId) / HitsOf(skillId);
         }
 
         public long AmountWhite()
@@ -227,46 +239,61 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
-        public double AvgCrit()
+        public double AvgCrit
         {
-            var crits = Crits();
-            if (crits == 0) { return 0; }
-            return AmountCrit() / crits;
+            get
+            {
+                var crits = Crits;
+                if (crits == 0) { return 0; }
+                return AmountCrit() / crits;
+            }
         }
 
-        public double AvgCrit(int skillId)
+        public double AvgCritOf(int skillId)
         {
-            var crits = Crits(skillId);
+            var crits = CritsOf(skillId);
             if (crits == 0) { return 0; }
             return AmountCrit(skillId) / crits;
         }
 
-        public double AvgWhite(int skillId)
+        public double AvgWhiteOf(int skillId)
         {
             var white = White(skillId);
             if (white == 0) { return 0; }
             return AmountWhite(skillId) / white;
         }
 
-        public double AvgWhite()
+        public double AvgWhite
         {
-            var white = White();
-            if (white == 0) { return 0; }
-            return AmountWhite() / white;
-        }
-
-
-        public string Id()
-        {
-            var result = "";
-            for (var i = 0; i < Skills.Count; i++)
+            get
             {
-                result += Skills.ElementAt(i).Key.Id;
-                if (i < Skills.Count - 1) { result += ","; }
+                var white = White();
+                if (white == 0) { return 0; }
+                return AmountWhite() / white;
             }
-            return result;
         }
 
+        public string Id
+        {
+            get
+            {
+                var result = "";
+                for (var i = 0; i < Skills.Count; i++)
+                {
+                    result += Skills.ElementAt(i).Key.Id;
+                    if (i < Skills.Count - 1) { result += ","; }
+                }
+                return result;
+            }
+        }
+
+        public double HPM
+        {
+            get
+            {
+                return Interval == 0 ? 0 : (double)Hits / Interval * TimeSpan.TicksPerMinute;
+            }
+        }
 
         public static IEnumerable<SkillAggregate> GetAggregate(PlayerDamageDealt playerDamageDealt, Entity entity, Skills skillsData, bool timedEncounter,
             Database.Database.Type type)

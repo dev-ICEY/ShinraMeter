@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+             xmlns:templateselectors="clr-namespace:DamageMeter.UI.HUD.TemplateSelectors"
              Startup="App_OnStartup"
              Exit="App_OnExit"
              ShutdownMode="OnMainWindowClose"
@@ -333,7 +334,7 @@
                         <Grid>
                             
                         <Border Name="border"
-                                Padding="0"
+                                Padding="{TemplateBinding Padding}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 Background="{TemplateBinding Background}">

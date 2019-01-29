@@ -21,7 +21,7 @@ namespace DamageMeter.UI
         private PlayerAbnormals _buffs;
 
         private bool _timedEncounter;
-        private Skills _windowSkill;
+        private Skills2 _windowSkill;
         public ImageSource Image;
 
         public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt, EntityInformation entityInformation,
@@ -171,7 +171,7 @@ namespace DamageMeter.UI
 
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
+                _windowSkill = new Skills2(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
                     PlayerNameTB = { Text = PlayerName }
@@ -195,8 +195,8 @@ namespace DamageMeter.UI
                     var m = source.CompositionTarget.TransformToDevice;
                     var dx = m.M11;
                     var dy = m.M22;
-                    ((UIElement)_windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    var maxWidth = (((UIElement)_windowSkill.DpsPanel.Content).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
+                    ((UIElement)_windowSkill.MainContent).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    var maxWidth = (((UIElement)_windowSkill.MainContent).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
                     Point locationFromScreen;
                     if (screen.WorkingArea.X + screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
                     {

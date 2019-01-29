@@ -53,15 +53,15 @@ namespace DamageMeter.UI
                     ContentWidth = header.Width;
 
                     header.LabelName.MouseRightButtonUp += LabelNameOnMouseRightButtonUp;
+                    header.LabelTotalHeal.MouseRightButtonUp += LabelTotalHealOnMouseRightButtonUp;
+                    header.LabelAverageCrit.MouseRightButtonUp += LabelAverageHealCritOnMouseRightButtonUp;
+                    header.LabelAverageHit.MouseRightButtonUp += LabelAverageHealHitOnMouseRightButtonUp;
+                    header.LabelAverage.MouseRightButtonUp += LabelAverageOnMouseRightButtonUp;
+                    header.LabelBiggestCrit.MouseRightButtonUp += LabelBiggestHealCritOnMouseRightButtonUp;
+                    header.LabelBiggestHit.MouseRightButtonUp += LabelBiggestHealHitOnMouseRightButtonUp;
                     header.LabelCritRateHeal.MouseRightButtonUp += LabelCritRateHealOnMouseRightButtonUp;
                     header.LabelNumberHitHeal.MouseRightButtonUp += LabelNumberHitHealOnMouseRightButtonUp;
                     header.LabelNumberCritHeal.MouseRightButtonUp += LabelNumberCritHealOnMouseRightButtonUp;
-                    header.LabelTotalHeal.MouseRightButtonUp += LabelTotalHealOnMouseRightButtonUp;
-                    header.LabelAverage.MouseRightButtonUp += LabelAverageOnMouseRightButtonUp;
-                    header.LabelAverageCrit.MouseRightButtonUp += LabelAverageHealCritOnMouseRightButtonUp;
-                    header.LabelAverageHit.MouseRightButtonUp += LabelAverageHealHitOnMouseRightButtonUp;
-                    header.LabelBiggestCrit.MouseRightButtonUp += LabelBiggestHealCritOnMouseRightButtonUp;
-                    header.LabelBiggestHit.MouseRightButtonUp += LabelBiggestHealHitOnMouseRightButtonUp;
                     _currentSortedLabel = header.LabelTotalHeal;
                     SkillsList.Items.Add(header);
                 }
@@ -186,37 +186,37 @@ namespace DamageMeter.UI
                     switch (_sortBy)
                     {
                         case SortBy.Amount:
-                            _skills = from skill in _skills orderby skill.Amount() descending select skill;
+                            _skills = from skill in _skills orderby skill.Amount descending select skill;
                             break;
                         case SortBy.AvgCrit:
-                            _skills = from skill in _skills orderby skill.AvgCrit() descending select skill;
+                            _skills = from skill in _skills orderby skill.AvgCrit descending select skill;
                             break;
                         case SortBy.AvgHit:
-                            _skills = from skill in _skills orderby skill.AvgWhite() descending select skill;
+                            _skills = from skill in _skills orderby skill.AvgWhite descending select skill;
                             break;
                         case SortBy.BigCrit:
-                            _skills = from skill in _skills orderby skill.BiggestCrit() descending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestCrit descending select skill;
                             break;
                         case SortBy.DamagePercent:
-                            _skills = from skill in _skills orderby skill.DamagePercent() descending select skill;
+                            _skills = from skill in _skills orderby skill.DamagePercent descending select skill;
                             break;
                         case SortBy.Name:
                             _skills = from entry in _skills orderby entry.Name descending select entry;
                             return;
                         case SortBy.NumberHits:
-                            _skills = from skill in _skills orderby skill.Hits() descending select skill;
+                            _skills = from skill in _skills orderby skill.Hits descending select skill;
                             break;
                         case SortBy.NumberCrits:
-                            _skills = from skill in _skills orderby skill.Crits() descending select skill;
+                            _skills = from skill in _skills orderby skill.Crits descending select skill;
                             break;
                         case SortBy.CritRate:
-                            _skills = from skill in _skills orderby skill.CritRate() descending select skill;
+                            _skills = from skill in _skills orderby skill.CritRate descending select skill;
                             break;
                         case SortBy.Avg:
-                            _skills = from skill in _skills orderby skill.Avg() descending select skill;
+                            _skills = from skill in _skills orderby skill.Avg descending select skill;
                             break;
                         case SortBy.BigHit:
-                            _skills = from skill in _skills orderby skill.BiggestHit() descending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestHit descending select skill;
                             break;
                         default: throw new ArgumentOutOfRangeException();
                     }
@@ -225,37 +225,37 @@ namespace DamageMeter.UI
                     switch (_sortBy)
                     {
                         case SortBy.Amount:
-                            _skills = from skill in _skills orderby skill.Amount() select skill;
+                            _skills = from skill in _skills orderby skill.Amount select skill;
                             break;
                         case SortBy.AvgCrit:
-                            _skills = from skill in _skills orderby skill.AvgCrit() select skill;
+                            _skills = from skill in _skills orderby skill.AvgCrit select skill;
                             break;
                         case SortBy.AvgHit:
-                            _skills = from skill in _skills orderby skill.AvgWhite() select skill;
+                            _skills = from skill in _skills orderby skill.AvgWhite select skill;
                             break;
                         case SortBy.BigCrit:
-                            _skills = from skill in _skills orderby skill.BiggestCrit() select skill;
+                            _skills = from skill in _skills orderby skill.BiggestCrit select skill;
                             break;
                         case SortBy.DamagePercent:
-                            _skills = from skill in _skills orderby skill.DamagePercent() select skill;
+                            _skills = from skill in _skills orderby skill.DamagePercent select skill;
                             break;
                         case SortBy.Name:
                             _skills = from entry in _skills orderby entry.Name select entry;
                             return;
                         case SortBy.NumberHits:
-                            _skills = from skill in _skills orderby skill.Hits() select skill;
+                            _skills = from skill in _skills orderby skill.Hits select skill;
                             break;
                         case SortBy.NumberCrits:
-                            _skills = from skill in _skills orderby skill.Crits() select skill;
+                            _skills = from skill in _skills orderby skill.Crits select skill;
                             break;
                         case SortBy.CritRate:
-                            _skills = from skill in _skills orderby skill.CritRate() select skill;
+                            _skills = from skill in _skills orderby skill.CritRate select skill;
                             break;
                         case SortBy.Avg:
-                            _skills = from skill in _skills orderby skill.Avg() select skill;
+                            _skills = from skill in _skills orderby skill.Avg select skill;
                             break;
                         case SortBy.BigHit:
-                            _skills = from skill in _skills orderby skill.BiggestHit() select skill;
+                            _skills = from skill in _skills orderby skill.BiggestHit select skill;
                             break;
                         default: throw new ArgumentOutOfRangeException();
                     }

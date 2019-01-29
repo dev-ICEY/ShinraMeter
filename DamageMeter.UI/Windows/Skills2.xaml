@@ -1,0 +1,516 @@
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.Skills2"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:dm="clr-namespace:DamageMeter;assembly=DamageMeter"
+                     xmlns:ui="clr-namespace:DamageMeter.UI"
+                     xmlns:l="clr-namespace:Lang;assembly=Lang"
+                     xmlns:templateselectors="clr-namespace:DamageMeter.UI.HUD.TemplateSelectors"
+                     xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+                     mc:Ignorable="d" Loaded="ClickThrouWindow_Loaded"
+                     MinHeight="10" MinWidth="10"
+                     Title="Skills"
+                     d:DataContext="{d:DesignInstance ui:Skills2VM}">
+    <Window.Resources>
+        <Style TargetType="{x:Type ToolTip}">
+            <Setter Property="Background" Value="#8F000000" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ShinraButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                BorderThickness="0"
+                                Padding="4,2"
+                                BorderBrush="Transparent"
+                                CornerRadius="0"
+                                Background="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <converters:ValueFormatter x:Key="ValueFormatter"/>
+        <converters:DoubleFormatter x:Key="DoubleFormatter"/>
+        <converters:AggregateToIcon x:Key="AggregateToIcon"/>
+        <!--Header templates-->
+        <DataTemplate x:Key="DpsHeaderTemplate" DataType="ui:DpsHeaderVM">
+            <DataTemplate.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Foreground" Value="{StaticResource DamageText}"/>
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}"/>
+            </DataTemplate.Resources>
+            <StackPanel Margin="0,0,0,0" Background="#09ffffff">
+                <Grid MouseLeftButtonDown="DragWindow" Margin="10,2,10,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="d0" Width="25" />
+                        <ColumnDefinition SharedSizeGroup="d1" Width="40" />
+                        <ColumnDefinition SharedSizeGroup="d2" Width="200" MaxWidth="200" />
+                        <ColumnDefinition SharedSizeGroup="d3" Width="80" />
+                        <ColumnDefinition SharedSizeGroup="d4" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d5" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d6" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d7" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d8" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d9" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d10" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d11" Width="80" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="d12" Width="80" MinWidth="65"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="2"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Name}">
+                        <TextBlock Text="{Binding NameText}"/>
+                    </Button>
+                    <Button Grid.Column="3"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Amount}">
+                        <TextBlock Text="{Binding TotalDamageText}"/>
+                    </Button>
+                    <Button Grid.Column="4"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.DamagePercent}">
+                        <TextBlock Text="{Binding DamagePercText}" />
+                    </Button>
+                    <Button Grid.Column="5"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.CritRate}">
+                        <TextBlock Text="{Binding CritRateDmgText}"/>
+                    </Button>
+                    <Button Grid.Column="6"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.BigCrit}">
+                        <TextBlock Text="{Binding BiggestCritText}"/>
+                    </Button>
+                    <Button Grid.Column="7"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.AvgCrit}">
+                        <TextBlock Text="{Binding AvgCritText}"/>
+                    </Button>
+                    <Button Grid.Column="8"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.AvgHit}">
+                        <TextBlock Text="{Binding AvgHitText}"/>
+                    </Button>
+                    <Button Grid.Column="9"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Avg}">
+                        <TextBlock Text="{Binding AvgTotalText}"/>
+                    </Button>
+                    <Button Grid.Column="10" Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.NumberHits}">
+                        <TextBlock Text="{Binding HitNumText}"/>
+                    </Button>
+                    <Button Grid.Column="11" Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.NumberCrits}">
+                        <TextBlock Text="{Binding CritNumDmgText}"/>
+                    </Button>
+                    <Button Grid.Column="12" >
+                        <TextBlock Text="{Binding HpmText}"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HealHeaderTemplate" >
+            <DataTemplate.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Foreground" Value="{StaticResource HealText}"/>
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}"/>
+
+            </DataTemplate.Resources>
+            <StackPanel Margin="0,0,0,0" Background="#09ffffff" d:DataContext="{d:DesignInstance ui:HealHeaderVM}">
+                <Grid MouseLeftButtonDown="DragWindow" Margin="10,2,10,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="h0" Width="25" />
+                        <ColumnDefinition SharedSizeGroup="h1" Width="40" />
+                        <ColumnDefinition SharedSizeGroup="h2" Width="200" MaxWidth="200" />
+                        <ColumnDefinition SharedSizeGroup="h3" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h4" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h5" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h6" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h7" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h8" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h9" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h10" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="h11" Width="Auto" MinWidth="65"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="2"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Name}">
+                        <TextBlock Text="{Binding NameText}"/>
+                    </Button>
+                    <Button Grid.Column="3"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Amount}">
+                        <TextBlock Text="{Binding HealText}"/>
+                    </Button>
+                    <Button Grid.Column="4"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.AvgCrit}">
+                        <TextBlock Text="{Binding AverageCritText}" />
+                    </Button>
+                    <Button Grid.Column="5"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.AvgHit}">
+                        <TextBlock Text="{Binding AvgWhiteText}"/>
+                    </Button>
+                    <Button Grid.Column="6"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Avg}">
+                        <TextBlock Text="{Binding AvgTotalText}"/>
+                    </Button>
+                    <Button Grid.Column="7"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.BigCrit}">
+                        <TextBlock Text="{Binding MaxCritText}"/>
+                    </Button>
+                    <Button Grid.Column="8"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.BigHit}">
+                        <TextBlock Text="{Binding MaxWhiteText}"/>
+                    </Button>
+                    <Button Grid.Column="9"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.CritRate}">
+                        <TextBlock Text="{Binding CritRateHealText}"/>
+                    </Button>
+                    <Button Grid.Column="10" Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.NumberHits}">
+                        <TextBlock Text="{Binding HitsText}"/>
+                    </Button>
+                    <Button Grid.Column="11" Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.NumberCrits}">
+                        <TextBlock Text="{Binding CritsText}"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ManaHeaderTemplate">
+            <DataTemplate.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Foreground" Value="{StaticResource ManaText}"/>
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}"/>
+
+            </DataTemplate.Resources>
+            <StackPanel Margin="0,0,0,0" Background="#09ffffff" 
+                        d:DataContext="{d:DesignInstance ui:ManaHeaderVM}">
+                <Grid MouseLeftButtonDown="DragWindow" Margin="10,2,10,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="m0" Width="25" />
+                        <ColumnDefinition SharedSizeGroup="m1" Width="40" />
+                        <ColumnDefinition SharedSizeGroup="m2" Width="200" MaxWidth="200" />
+                        <ColumnDefinition SharedSizeGroup="m3" Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition SharedSizeGroup="m4" Width="Auto" MinWidth="65"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="2"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Name}">
+                        <TextBlock Text="{Binding NameText}"/>
+                    </Button>
+                    <Button Grid.Column="3"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Amount}">
+                        <TextBlock Text="{Binding ManaText}"/>
+                    </Button>
+                    <Button Grid.Column="4"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.NumberHits}">
+                        <TextBlock Text="{Binding ManaHitsText}" />
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="CounterHeaderTemplate">
+            <DataTemplate.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Foreground" Value="{StaticResource CastText}"/>
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}"/>
+            </DataTemplate.Resources>
+            <StackPanel Margin="0,0,0,0" Background="#09ffffff" 
+                        d:DataContext="{d:DesignInstance ui:CounterHeaderVM}">
+                <Grid MouseLeftButtonDown="DragWindow" Margin="10,2,10,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="m0" Width="25" />
+                        <ColumnDefinition SharedSizeGroup="m1" Width="40" />
+                        <ColumnDefinition SharedSizeGroup="m2" Width="200" MinWidth="200" />
+                        <ColumnDefinition SharedSizeGroup="m3" Width="Auto" MinWidth="65"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="2"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Name}">
+                        <TextBlock Text="{Binding NameText}"/>
+                    </Button>
+                    <Button Grid.Column="3"  Command="{Binding SortCommand}" CommandParameter="{x:Static ui:SortBy.Amount}">
+                        <TextBlock Text="{Binding HitsText}"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+
+        </DataTemplate>
+        <converters:TypeToTemplateConverter x:Key="HeaderTemplateConverter"
+                                            Dps="{StaticResource DpsHeaderTemplate}"
+                                            Heal="{StaticResource HealHeaderTemplate}"
+                                            Mana="{StaticResource ManaHeaderTemplate}"
+                                            Count="{StaticResource CounterHeaderTemplate}"/>
+        <!--Skill templates-->
+        <DataTemplate x:Key="DpsSkillTemplate" DataType="{x:Type ui:AggregateVM}">
+            <Expander IsExpanded="False" Margin="5,0,10,0" Padding="0,1" d:DataContext="{d:DesignInstance ui:AggregateVM}">
+                <Expander.Header>
+                    <!--TODO: triggers for hilight-->
+                    <Grid MouseLeftButtonDown="DragWindow" Margin="0,0,0,0" >
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}"/>
+                                <Setter Property="MinHeight" Value="40"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="d1" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d2" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d3" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d4" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d5" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d6" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d7" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d8" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d9" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d10" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d11" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="d12" Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Fill="#1999"/>
+                        <Ellipse x:Name="SkillIconWrapper" 
+                                 Grid.Column="0" 
+                                 Stretch="Fill" 
+                                 HorizontalAlignment="Left" 
+                                 VerticalAlignment="Top" 
+                                 Height="40" 
+                                 Width="40" >
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="SkillIcon" ImageSource="{Binding SkillIcon}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <TextBlock x:Name="LabelName" Margin="10,0,0,0"   Grid.Column="1"   Text="{Binding Aggregate.Name}" ToolTip="{Binding Id}"       />
+                        <TextBlock x:Name="LabelTotalDamage"              Grid.Column="2"   Text="{Binding Aggregate.Amount, Converter={StaticResource ValueFormatter}}"        />
+                        <TextBlock x:Name="LabelDamagePercentage"         Grid.Column="3"   Text="{Binding Aggregate.DamagePercent, Mode=OneWay}"> <Run Text="%"/></TextBlock>
+                        <TextBlock x:Name="LabelCritRateDmg"              Grid.Column="4"   Text="{Binding Aggregate.CritRate, Mode=OneWay}">      <Run Text="%"/></TextBlock>
+                        <TextBlock x:Name="LabelBiggestCrit"              Grid.Column="5"   Text="{Binding Aggregate.BiggestCrit, Converter={StaticResource ValueFormatter}}"        />
+                        <TextBlock x:Name="LabelAverageCrit"              Grid.Column="6"   Text="{Binding Aggregate.AvgCrit, Converter={StaticResource ValueFormatter}}"        />
+                        <TextBlock x:Name="LabelAverageHit"               Grid.Column="7"   Text="{Binding Aggregate.AvgWhite, Converter={StaticResource ValueFormatter}}"        />
+                        <TextBlock x:Name="LabelAverageTotal"             Grid.Column="8"   Text="{Binding Aggregate.Avg, Converter={StaticResource ValueFormatter}}"        />
+                        <TextBlock x:Name="LabelNumberHitDmg"             Grid.Column="9"   Text="{Binding Aggregate.Hits}"        />
+                        <TextBlock x:Name="LabelNumberCritDmg"            Grid.Column="10"  Text="{Binding Aggregate.Crits}"        />
+                        <TextBlock x:Name="LabelNumberHPM"                Grid.Column="11"  Text="{Binding Aggregate.HPM, Converter={StaticResource DoubleFormatter}}"        />
+                    </Grid>
+                </Expander.Header>
+                <Expander.Content>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="-1,0,0,0">
+                        <ItemsControl MouseLeftButtonDown="DragWindow" x:Name="SkillsDetailList"
+                                  Background="Transparent" BorderThickness="0" Focusable="False"
+                                  HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
+                                  IsTextSearchEnabled="False" ItemsSource="{Binding Details}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type ui:DetailsVM}">
+                                    <DataTemplate.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="14"/>
+                                            <Setter Property="MinHeight" Value="29"/>
+                                            <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}"/>
+                                        </Style>
+                                    </DataTemplate.Resources>
+                                    <Grid MouseLeftButtonDown="DragWindow"  Margin="0,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="d0" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d1" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d2" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d3" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d4" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d5" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d6" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d7" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d8" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d9" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d10" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d11" Width="Auto" />
+                                            <ColumnDefinition SharedSizeGroup="d12" Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="2"  x:Name="LabelName" Padding="40,0,0,0" Text="{Binding Name}" ToolTip="{Binding Tooltip}"/>
+                                        <TextBlock Grid.Column="3"  x:Name="LabelTotalDamage"             Text="{Binding TotalDmgText}"/>
+                                        <TextBlock Grid.Column="4"  x:Name="LabelDamagePercentage"        Text="{Binding DamagePercText}"/>
+                                        <TextBlock Grid.Column="5"  x:Name="LabelCritRateDmg"             Text="{Binding CritRateDmgText}"/>
+                                        <TextBlock Grid.Column="6"  x:Name="LabelBiggestCrit"             Text="{Binding MaxCritText}"/>
+                                        <TextBlock Grid.Column="7"  x:Name="LabelAverageCrit"             Text="{Binding AvgCritText}"/>
+                                        <TextBlock Grid.Column="8"  x:Name="LabelAverageHit"              Text="{Binding AvgWhiteText}"/>
+                                        <TextBlock Grid.Column="9"  x:Name="LabelAverageTotal"            Text="{Binding AvgTotalText}"/>
+                                        <TextBlock Grid.Column="10" x:Name="LabelNumberHitDmg"            Text="{Binding HitsText}"/>
+                                        <TextBlock Grid.Column="11" x:Name="LabelNumberCritDmg"           Text="{Binding CritsText}"/>
+                                        <TextBlock Grid.Column="12" x:Name="LabelNumberHPM"               Text="{Binding HpmText}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Expander.Content>
+            </Expander>
+
+        </DataTemplate>
+        <DataTemplate x:Key="HealSkillTemplate"></DataTemplate>
+        <DataTemplate x:Key="ManaSkillTemplate"></DataTemplate>
+        <DataTemplate x:Key="CounterSkillTemplate"></DataTemplate>
+        <converters:TypeToTemplateConverter x:Key="SkillTemplateConverter"
+                                            Dps="{StaticResource DpsSkillTemplate}"
+                                            Heal="{StaticResource HealSkillTemplate}"
+                                            Mana="{StaticResource ManaSkillTemplate}"
+                                            Count="{StaticResource CounterSkillTemplate}"/>
+
+        <!--Main view templates-->
+        <DataTemplate x:Key="SkillsDetails" DataType="ui:SkillsDetailVM">
+            <Grid d:DataContext="{d:DesignInstance ui:SkillsDetailVM}" Grid.IsSharedSizeScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ContentControl x:Name="Header"
+                                ContentTemplate="{Binding DetailType, Converter={StaticResource HeaderTemplateConverter}}"
+                                Content="{Binding HeaderVM}"/>
+                <ItemsControl x:Name="List" 
+                              ItemsSource="{Binding DataView}" 
+                              Grid.Row="1"
+                              ItemTemplate="{Binding DetailType, Converter={StaticResource SkillTemplateConverter}}"/>
+
+
+            </Grid>
+
+        </DataTemplate>
+        <DataTemplate x:Key="BuffsDetails">
+            <TextBlock >Buff details</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="DealtLog">
+            <TextBlock >Dealt log</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="ReceivedLog">
+            <TextBlock >Received log</TextBlock>
+        </DataTemplate>
+        <templateselectors:SkillsWindowTemplateSelector x:Key="MainTemplateSelector"
+                                                        SkillDetails="{StaticResource SkillsDetails}"
+                                                        BuffDetails="{StaticResource BuffsDetails}"
+                                                        DealtLog="{StaticResource DealtLog}"
+                                                        ReceivedLog="{StaticResource ReceivedLog}"/>
+    </Window.Resources>
+    <Window.Background>
+        <SolidColorBrush Color="Transparent" Opacity="0" />
+    </Window.Background>
+    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0"
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
+        </Grid.LayoutTransform>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="3"/>
+        <!--Player info-->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="ClassImage" Width="50" Height="50" HorizontalAlignment="Left"  Margin="5" />
+            <TextBlock x:Name="PlayerNameTB" Foreground="{StaticResource LightPrimaryText}" FontSize="24" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="1" Grid.Column="2" Height="34" Margin="20,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="17"/>
+                        <Setter Property="Background" Value="{StaticResource DarkBackgroundColor}" />
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Padding" Value="10,0"></Setter>
+                        <Setter Property="Margin" Value="0,0,10,0"></Setter>
+                        <Setter Property="MinWidth" Value="34"></Setter>
+                        <Setter Property="MaxWidth" Value="100"></Setter>
+                    </Style>
+                </StackPanel.Resources>
+                <Border>
+                    <StackPanel Background="Transparent" Focusable="False" 
+                        Grid.Column="0" Orientation="Horizontal"
+                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
+                       ToolTip="{x:Static l:LP.Deaths_Tooltip}">
+                        <Image x:Name="DeathIcon" ToolTip="{Binding Source={x:Static l:LP.Deaths}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
+                        <TextBlock x:Name="DeathCounter" Foreground="{StaticResource LightPrimaryText}" 
+                                   VerticalAlignment="Center" Margin="0,5,5,5"
+                                   Text="{Binding DeathCounterText}"/>
+                    </StackPanel>
+                </Border>
+                <Border>
+
+                    <StackPanel Focusable="False"
+                        Grid.Column="2" Orientation="Horizontal"
+                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
+                       Background="Transparent"
+                       ToolTip="{x:Static l:LP.Death_Time_Tooltip}">
+                        <Image x:Name="DeathTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Death_Time}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
+                        <TextBlock x:Name="DeathDuration" Foreground="{StaticResource LightPrimaryText}" 
+                                   VerticalAlignment="Center" Margin="0,5,5,5"
+                                   Text="{Binding DeathDurationText}"/>
+                    </StackPanel>
+                </Border>
+                <Border>
+
+                    <StackPanel Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       Orientation="Horizontal" Grid.Column="4"
+                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
+                       ToolTip="{x:Static l:LP.Aggro_Tooltip}">
+                        <Image x:Name="AggroIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro}, StringFormat= '\{0\}:'}"  Margin="0,5,5,5"/>
+                        <TextBlock x:Name="AggroCounter" Foreground="{StaticResource LightPrimaryText}" 
+                                   VerticalAlignment="Center" Margin="0,5,5,5"
+                                   Text="{Binding AggroCounterText}"/>
+
+                    </StackPanel>
+                </Border>
+                <Border>
+                    <StackPanel Focusable="False" HorizontalAlignment="Left" 
+                       Orientation="Horizontal" Grid.Column="6"
+                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
+                       Background="Transparent"
+                       ToolTip="{x:Static l:LP.Aggro_Time_Tooltip}">
+                        <Image x:Name="AggroTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro_Time}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
+                        <TextBlock x:Name="AggroDuration" Foreground="{StaticResource LightPrimaryText}" 
+                                   VerticalAlignment="Center" Margin="0,5,5,5"
+                                   Text="{Binding AggroDurationText}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <Button Grid.Row="0" Grid.Column="4" x:Name="CloseMeter" Style="{StaticResource ButtonMainStyle}" 
+                    Background="Transparent"
+                     Click="Button_OnClick" HorizontalContentAlignment="Center"
+                    VerticalAlignment="Top" Margin="0">
+                <Image x:Name="CloseWindow" Opacity=".5"
+                       HorizontalAlignment="Left" Margin="0"
+                       Height="Auto" VerticalAlignment="Stretch"  Width="30" />
+            </Button>
+        </Grid>
+        <!--Main view-->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}"
+                        ContentTemplateSelector="{StaticResource MainTemplateSelector}"
+                        x:Name="MainContent"
+                        Foreground="White"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"/>
+        <UniformGrid Grid.Row="2" Rows="1">
+            <!--TODO: use TCC styles-->
+            <Button Style="{StaticResource ButtonMainStyle}" Padding="5" HorizontalContentAlignment="Center" Content="DPS" Command="{Binding SwitchView}" CommandParameter="{x:Static ui:ViewType.Damage}"></Button>
+            <Button Style="{StaticResource ButtonMainStyle}" Padding="5" HorizontalContentAlignment="Center" Content="HEAL" Command="{Binding SwitchView}" CommandParameter="{x:Static ui:ViewType.Heal}"></Button>
+            <Button Style="{StaticResource ButtonMainStyle}" Padding="5" HorizontalContentAlignment="Center" Content="MANA" Command="{Binding SwitchView}" CommandParameter="{x:Static ui:ViewType.Mana}"></Button>
+            <Button Style="{StaticResource ButtonMainStyle}" Padding="5" HorizontalContentAlignment="Center" Content="CASTS" Command="{Binding SwitchView}" CommandParameter="{x:Static ui:ViewType.Counter}"></Button>
+        </UniformGrid>
+    </Grid>
+</ui:ClickThrouWindow>

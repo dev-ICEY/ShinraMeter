@@ -140,12 +140,16 @@
     <Compile Include="HUD\Controls\RunemarksControl.xaml.cs">
       <DependentUpon>RunemarksControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HUD\Converters\DamageFormatter.cs" />
     <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
     <Compile Include="HUD\Converters\IconConverter.cs" />
     <Compile Include="Controls\KineticBehaviour.cs" />
     <Compile Include="Controls\MaterialSwitch.xaml.cs">
       <DependentUpon>MaterialSwitch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HUD\Converters\TypeToTemplateConverter.cs" />
+    <Compile Include="HUD\TemplateSelectors\DetailsHeaderTemplateSelector.cs" />
+    <Compile Include="HUD\TemplateSelectors\SkillsWindowTemplateSelector.cs" />
     <Compile Include="NotificationControl.xaml.cs">
       <DependentUpon>NotificationControl.xaml</DependentUpon>
     </Compile>
@@ -155,6 +159,7 @@
     <Compile Include="UploadTooltip.xaml.cs">
       <DependentUpon>UploadTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\GuiUtils.cs" />
     <Compile Include="Windows\PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
@@ -240,6 +245,10 @@
     </Compile>
     <Compile Include="SkillDetail\SkillDetailDps.xaml.cs">
       <DependentUpon>SkillDetailDps.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\RelayCommand.cs" />
+    <Compile Include="Windows\Skills2.xaml.cs">
+      <DependentUpon>Skills2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Skills.xaml.cs">
       <DependentUpon>Skills.xaml</DependentUpon>
@@ -414,6 +423,10 @@
     <Page Include="SkillDetail\SkillDetailDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Skills2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Skills.xaml">
       <SubType>Designer</SubType>

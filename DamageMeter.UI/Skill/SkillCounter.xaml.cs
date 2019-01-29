@@ -33,10 +33,10 @@ namespace DamageMeter.UI.Skill
 
         public void Update(SkillAggregate skill)
         {
-            var skillsId = skill.Id();
+            var skillsId = skill.Id;
 
             LabelName.ToolTip = skillsId;
-            LabelNumberHit.Content = skill.Hits();
+            LabelNumberHit.Content = skill.Hits;
 
             SkillsDetailList.Items.Clear();
 

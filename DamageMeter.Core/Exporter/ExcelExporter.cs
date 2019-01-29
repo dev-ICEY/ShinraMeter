@@ -696,7 +696,7 @@ namespace DamageMeter
             var i = 2;
 
             if(user.playerTotalDamage!="0")
-                foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer + "/" + user.playerName].OrderByDescending(x => x.Amount()))
+                foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer + "/" + user.playerName].OrderByDescending(x => x.Amount))
                 {
                     i++;
                     ws.Cells[i, 1].Value = i - 2;
@@ -708,21 +708,21 @@ namespace DamageMeter
                     }
 
                     ws.Cells[i, 2].Value = stat.Name;
-                    ws.Cells[i, 3].Value = stat.DamagePercent() / 100;
+                    ws.Cells[i, 3].Value = stat.DamagePercent/ 100;
                     ws.Cells[i, 3].Style.Numberformat.Format = "0.0%";
-                    ws.Cells[i, 4].Value = stat.Amount();
+                    ws.Cells[i, 4].Value = stat.Amount;
                     ws.Cells[i, 4].Style.Numberformat.Format = @"#,#0,\k";
-                    ws.Cells[i, 5].Value = stat.CritRate() / 100;
+                    ws.Cells[i, 5].Value = stat.CritRate/ 100;
                     ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
-                    ws.Cells[i, 6].Value = stat.Hits();
-                    ws.Cells[i, 7].Value = stat.Crits();
-                    ws.Cells[i, 8].Value = stat.BiggestCrit();
+                    ws.Cells[i, 6].Value = stat.Hits;
+                    ws.Cells[i, 7].Value = stat.Crits;
+                    ws.Cells[i, 8].Value = stat.BiggestCrit;
                     ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k";
                     ws.Cells[i, 9].Value = stat.LowestCrit();
                     ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                    ws.Cells[i, 10].Value = stat.AvgCrit();
+                    ws.Cells[i, 10].Value = stat.AvgCrit;
                     ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
-                    ws.Cells[i, 11].Value = stat.AvgWhite();
+                    ws.Cells[i, 11].Value = stat.AvgWhite;
                     ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
                 }
             var border = ws.Cells[1, 1, i, 11].Style.Border;

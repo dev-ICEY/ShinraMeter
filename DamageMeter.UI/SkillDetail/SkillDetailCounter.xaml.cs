@@ -25,7 +25,7 @@ namespace DamageMeter.UI.SkillDetail
             if (chained == true) { LabelName.Content += " " + LP.Chained; }
 
             LabelName.ToolTip = skill.Id;
-            LabelNumberHit.Content = skillAggregate.Hits(skill.Id);
+            LabelNumberHit.Content = skillAggregate.HitsOf(skill.Id);
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }

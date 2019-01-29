@@ -28,23 +28,23 @@ namespace DamageMeter.UI.Skill
 
         public void Update(SkillAggregate skill)
         {
-            var skillsId = skill.Id();
+            var skillsId = skill.Id;
 
             LabelName.ToolTip = skillsId;
-            LabelCritRateDmg.Content = skill.CritRate() + "%";
+            LabelCritRateDmg.Content = skill.CritRate+ "%";
 
-            LabelDamagePercentage.Content = skill.DamagePercent() + "%";
-            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
+            LabelDamagePercentage.Content = skill.DamagePercent+ "%";
+            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Amount);
 
-            var hits = skill.Hits();
+            var hits = skill.Hits;
             LabelNumberHitDmg.Content = hits;
 
-            LabelNumberCritDmg.Content = skill.Crits();
+            LabelNumberCritDmg.Content = skill.Crits;
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgCrit());
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit());
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgWhite());
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skill.Avg());
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgCrit);
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit);
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgWhite);
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skill.Avg);
             LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skill.Interval == 0 ? 0 : (double)hits / skill.Interval * TimeSpan.TicksPerMinute);
 
             SkillsDetailList.Items.Clear();

@@ -27,19 +27,19 @@ namespace DamageMeter.UI.SkillDetail
             if (chained == true) { LabelName.Content += " " + LP.Chained; }
 
             LabelName.ToolTip = skill.Id;
-            LabelCritRateDmg.Content = skillAggregate.CritRate(skill.Id) + "%";
+            LabelCritRateDmg.Content = skillAggregate.CritRateOf(skill.Id) + "%";
 
-            LabelDamagePercentage.Content = skillAggregate.DamagePercent(skill.Id) + "%";
-            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));
+            LabelDamagePercentage.Content = skillAggregate.DamagePercentOf(skill.Id) + "%";
+            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skillAggregate.AmountOf(skill.Id));
 
-            var hits = skillAggregate.Hits(skill.Id);
+            var hits = skillAggregate.HitsOf(skill.Id);
             LabelNumberHitDmg.Content = hits;
-            LabelNumberCritDmg.Content = skillAggregate.Crits(skill.Id);
+            LabelNumberCritDmg.Content = skillAggregate.CritsOf(skill.Id);
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgCrit(skill.Id));
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skillAggregate.BiggestCrit(skill.Id));
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgWhite(skill.Id));
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.Avg(skill.Id));
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgCritOf(skill.Id));
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skillAggregate.BiggestCritOf(skill.Id));
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgWhiteOf(skill.Id));
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgOf(skill.Id));
             LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skillAggregate.Interval == 0 ? 0 : (double)hits / skillAggregate.Interval * TimeSpan.TicksPerMinute);
         }
 
